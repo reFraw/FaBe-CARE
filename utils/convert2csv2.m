@@ -64,6 +64,8 @@ PSmin = input(">>> INSERT MIN P_sis: ");
 PSmax = input(">>> INSERT MAX P_sis: ");
 PDmin = input(">>> INSERT MIN P_dia: ");
 PDmax = input(">>> INSERT MAX P_dia: ");
+POLmin = input(">>> INSERT MIN POL: ");
+POLmax = input(">>> INSERT MAX POL: ");
 
 
 AnonID = input(">>> INSERT ANONIMYZED IDENTIFIER (AAAABBBCCC): ", "s");
@@ -81,7 +83,7 @@ xlswrite(save_path, {"Warning"}, 1, "E1");
 
 ID = {AnonID};
 ID = repmat(ID, 86496, 1);
-xlswrite(save_path, ID, 1, "A2:A86497");
+xlswrite(save_path, ID, 1, "A2:A86521");
 
 xlswrite(save_path, exceltime(t), 1, "B2:B86401");
 xlswrite(save_path, type, 1, "C2:C86401");
@@ -94,7 +96,12 @@ type = {'T'};
 type = repmat(type, 24, 1);
 
 t_temp_pres = linspace(t1, t2, 24);
+
 randomT = randi([Tmin Tmax], 24, 1);
+for i = 1 : length(randomT)
+    randomT(i) = randomT(i) + rand();
+end
+
 warningT = {};
 T_soglia = 38;
 for i = 1 : length(randomT)
@@ -173,5 +180,26 @@ xlswrite(save_path, type, 1, "C86474:C86497")
 xlswrite(save_path, randomPS, 1, "D86474:D86497")
 xlswrite(save_path, warningPS', 1, "E86474:E86497")
 
+% 4. POLSO
+type = {'POL'};
+type = repmat(type, 24, 1);
 
-fprintf("[INFO] Finished\n\n");
+randomPOL = randi([POLmin POLmax], 24, 1);
+warningPOL = {};
+POL_soglia_min = 55;
+POL_soglia_max = 90;
+for i = 1 : length(randomT)
+    if (randomPOL(i) < POL_soglia_min) || (randomPOL(i) > POL_soglia_max)
+        warningPOL(i) = {'Y'};
+    else
+        warningPOL(i) = {'N'};
+    end
+end
+
+xlswrite(save_path, exceltime(t_temp_pres'), 1, "B86498:B86521")
+xlswrite(save_path, type, 1, "C86498:C86521")
+xlswrite(save_path, randomPS, 1, "D86498:D86521")
+xlswrite(save_path, warningPS', 1, "E86498:E86521")
+
+
+fprintf("\n[INFO] Finished\n\n");
