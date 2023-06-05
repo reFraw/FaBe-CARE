@@ -82,7 +82,7 @@ xlswrite(save_path, {"Value"}, 1, "D1");
 xlswrite(save_path, {"Warning"}, 1, "E1");
 
 ID = {AnonID};
-ID = repmat(ID, 86496, 1);
+ID = repmat(ID, 86521, 1);
 xlswrite(save_path, ID, 1, "A2:A86521");
 
 xlswrite(save_path, exceltime(t), 1, "B2:B86401");
@@ -198,8 +198,8 @@ end
 
 xlswrite(save_path, exceltime(t_temp_pres'), 1, "B86498:B86521")
 xlswrite(save_path, type, 1, "C86498:C86521")
-xlswrite(save_path, randomPS, 1, "D86498:D86521")
-xlswrite(save_path, warningPS', 1, "E86498:E86521")
+xlswrite(save_path, randomPOL, 1, "D86498:D86521")
+xlswrite(save_path, warningPOL', 1, "E86498:E86521")
 
 
 fprintf("\n[INFO] Finished\n\n");
