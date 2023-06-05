@@ -1,4 +1,5 @@
-# PROJECT THUNDER
+# FaBe-CARE
+## Future of Advanced Biomedical Electronic Care
 Progettazione e implementazione di un DB relazionale - Sanità Digitale - A.A. 22/23
 
 <p align="center" width="100%">
