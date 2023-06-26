@@ -6,6 +6,9 @@ from sqlalchemy import text
 import pandas as pd
 
 from .roles import roles
+from .roles import users
+
+from tabulate import tabulate
 
 class Bcolors:
     HEADER = '\033[95m'
@@ -49,8 +52,10 @@ def getAnagrafica(engine, ruolo):
     choice = ''
 
     print(Bcolors.OKCYAN + """
-            [1] Anagrafica completa dei pazienti
-            [2] Ricerca paziente
+        SELECT AN OPTION
+    
+        [1] Complete patients registry
+        [2] Search patient
             """ + Bcolors.ENDC)
 
     while choice != '1' and choice != '2':
@@ -59,7 +64,7 @@ def getAnagrafica(engine, ruolo):
 
             while True:
 
-                choice = input("\n[INFO] Seleziona opzione >>> ")
+                choice = input("\n[INFO] Select an option >>> ")
 
                 if choice == '1':
                     query = text("SELECT IDP, NOME, COGNOME, DATA_NASCITA FROM pazienti")
@@ -79,7 +84,7 @@ def getAnagrafica(engine, ruolo):
                     print(Bcolors.FAIL + f"\n[ERROR] Invalid input...\n" + Bcolors.ENDC)
 
         else:
-            choice = input("\n[INFO] Seleziona opzione >>> ")
+            choice = input("\n[INFO] Select an option >>> ")
 
             if choice == '1':
                 query = text("SELECT * FROM pazienti")
@@ -104,8 +109,10 @@ def getStoriaClinica(engine, ruolo):
     choice = ''
 
     print(Bcolors.OKCYAN + """
-            [1] Storia clinica di tutti i pazienti
-            [2] Ricerca paziente
+        SELECT AN OPTION
+    
+        [1] Clinical history of all patients
+        [2] Search patient
             """ + Bcolors.ENDC)
 
     while choice != '1' and choice != '2':
@@ -114,7 +121,7 @@ def getStoriaClinica(engine, ruolo):
 
             while True:
 
-                choice = input("\n[INFO] Seleziona opzione >>> ")
+                choice = input("\n[INFO] Select an option >>> ")
 
                 if choice == '1':
                     query = text("SELECT ID_PAZIENTE, ID_PERSONALE, PATOLOGIA, PRESCRIZIONI FROM cure")
@@ -134,7 +141,7 @@ def getStoriaClinica(engine, ruolo):
                     print(Bcolors.FAIL + f"\n[ERROR] Invalid input...\n" + Bcolors.ENDC)
 
         else:
-            choice = input("\n[INFO] Seleziona opzione >>> ")
+            choice = input("\n[INFO] Select an option >>> ")
 
             if choice == '1':
                 query = text("SELECT * FROM cure")
@@ -152,3 +159,96 @@ def getStoriaClinica(engine, ruolo):
                     print(Bcolors.FAIL + f"\n[ERROR] Something goes wrong. Error message : {e}\n" + Bcolors.ENDC)
             else:
                 print(Bcolors.FAIL + f"\n[ERROR] Invalid input..." + Bcolors.ENDC)
+
+
+def getDataframeParametri(engine, tipo, UID):
+    with engine.connect() as conn:
+        query = text(f"SELECT TIMESTAMP, VALORE, TIPO, WARNING FROM parametri_vitali WHERE ID = '{UID}' AND TIPO = '{tipo}'")
+        res = pd.read_sql_query(query, conn)
+
+    return res
+
+
+def getParametri(engine):
+
+    print(Bcolors.OKCYAN + """
+        SELECT AN OPTION
+                        
+        [1] Temperature
+        [2] Systolic pressure
+        [3] Diastolic pressure
+        [4] Pulse
+        [5] Respiratory rate
+        [6] EEG
+                        """ + Bcolors.ENDC)
+
+    choice = ''
+
+    while choice not in ['1', '2', '3', '4', '5', '6']:
+
+        while True:
+
+            choice = input("\n[INFO] Select an option >>> ")
+
+            if choice not in ['1', '2', '3', '4', '5', '6']:
+                print(Bcolors.FAIL + f"\n[ERROR] Invalid input..." + Bcolors.ENDC)
+                continue
+
+            UID = input("\n[INFO] Insert patient UID >>> ")
+
+            if choice == '1':
+                type = 'T'
+                res = getDataframeParametri(engine, type, UID)
+
+
+            elif choice == '2':
+                type = 'PS'
+                res = getDataframeParametri(engine, type, UID)
+
+
+            elif choice == '3':
+                type = 'PD'
+                res = getDataframeParametri(engine, type, UID)
+
+            elif choice == '4':
+                type = 'POL'
+                res = getDataframeParametri(engine, type, UID)
+
+
+            elif choice == '5':
+                type = 'F'
+                res = getDataframeParametri(engine, type, UID)
+
+
+            elif choice == '6':
+                type = 'EEG'
+                res = getDataframeParametri(engine, type, UID)
+
+
+            else:
+                print(Bcolors.FAIL + f"\n[ERROR] Invalid input..." + Bcolors.ENDC)
+
+
+            return res, type
+
+
+def getEmergencies(engine):
+    with engine.connect() as conn:
+        query = text("select ID, count(VALORE) AS WARNINGS from parametri_vitali WHERE ((TIPO = 'T' AND VALORE >= 39.5) OR (TIPO = 'PS' AND VALORE >= 175)) GROUP BY ID")
+        res = pd.read_sql_query(query, conn)
+
+    return res
+
+def getFullEmergenciesData(engine, ID):
+    query = text(f"SELECT pa.IDP, pa.NOME, pa.COGNOME, cu.PATOLOGIA, cu.MMSE, cu.BRASS, pv.TIMESTAMP, pv.TIPO, pv.VALORE FROM pazienti AS pa JOIN cure AS cu ON pa.IDP = cu.ID_PAZIENTE JOIN parametri_vitali AS pv ON pa.IDP = pv.ID WHERE ((pv.TIPO = 'T' AND pv.VALORE >= 39.5) OR (pv.TIPO = 'PS' AND pv.VALORE >= 175)) AND (pa.IDP = '{ID}')")
+    with engine.connect() as conn:
+        res = pd.read_sql_query(query, conn)
+
+    return res
+
+
+def checkUser(user):
+    global users
+    if user not in users:
+        return 0
+

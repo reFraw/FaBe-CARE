@@ -1,11 +1,14 @@
 from .frontend import Bcolors
 from .frontend import createStoriaClinicaScreen
+from .frontend import createMainScreen
 
 from.functional import getStoriaClinica
 
 import pandas as pd
 
 from tabulate import tabulate
+
+import os
 
 def storia_clinica(ruolo, engine):
 
@@ -21,3 +24,5 @@ def storia_clinica(ruolo, engine):
         print(tabulate(res, headers='keys', tablefmt='psql'))
         print("\n")
         waiter = input("\n[INFO] Press ENTER to continue...")
+        os.system("cls")
+        createMainScreen()

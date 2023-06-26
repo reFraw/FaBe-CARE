@@ -5,3 +5,18 @@ roles = {
     3:"p.romano", # Tecnico
     4:"a.pizzuto" # OSS
 }
+
+users = ["a.bianchini",
+         "l.marchetti",
+         "m.ricciardi",
+         "i.moretti",
+         "e.de_luca",
+         "l.caruso",
+         "c.martini",
+         "f.conti",
+         "c.rossetti",
+         "g.russo",
+         "m.rainone",
+         "p.romano",
+         "f.ricciardi",
+         "a.pizzuto"]

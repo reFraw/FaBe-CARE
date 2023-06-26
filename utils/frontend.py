@@ -1,7 +1,7 @@
 from time import sleep
 import os
 
-from .logos import header, header_anagrafica, logo, header_storia
+from .logos import header, header_anagrafica, logo, header_storia, header_parametri, header_emergencies
 
 class Bcolors:
     HEADER = '\033[95m'
@@ -26,7 +26,7 @@ def join_art(s1, s2, str_between=''):
 def createLogo(HEADER, LOGO):
 
     fullLogo = join_art(HEADER, LOGO)
-    fullLogo = Bcolors.OKCYAN + fullLogo + Bcolors.ENDC
+    fullLogo = fullLogo
 
     return fullLogo
 
@@ -36,13 +36,15 @@ def createMainScreen():
     print(Bcolors.OKCYAN + createLogo(header, logo) + Bcolors.ENDC)
 
     print(Bcolors.OKCYAN + """
-        SELEZIONARE UN'OPERAZIONE DA ESEGUIRE
+        SELECT AN OPERATION
 
-        [1] Visualizza anagrafica pazienti
-        [2] Visualizza parametri vitali
-        [3] Analisi parametri vitali
-        [4] Visualizza la storia clinica dei pazienti
-        [00] Chiudi il programma
+        [1] View patient registry
+        [2] Vital parameters analysis
+        [3] View patients clinical history
+        """ + Bcolors.ENDC + Bcolors.WARNING + """
+        [4] View emergencies
+        """ + Bcolors.ENDC + Bcolors.OKCYAN + """
+        [00] Close program
 
         """ + Bcolors.ENDC)
 
@@ -55,14 +57,23 @@ def createStoriaClinicaScreen():
     os.system("cls")
     print(Bcolors.OKCYAN + createLogo(header_storia, logo) + Bcolors.ENDC + "\n")
 
+def createParametriScreen():
+    os.system("cls")
+    print(Bcolors.OKCYAN + createLogo(header_parametri, logo) + Bcolors.ENDC + "\n")
+
+def createEmergenciesScreen():
+    os.system("cls")
+    print(Bcolors.ENDC)
+    print(Bcolors.WARNING + createLogo(header_emergencies, logo) + Bcolors.ENDC + "\n")
+
 def fakeBuild():
     print("\n[*] Connecting to server...")
-    sleep(2)
+    sleep(0.1)
     print("[#] Connection established...")
-    sleep(1)
+    sleep(0.1)
     print("[*] Validating credentials...")
-    sleep(2)
+    sleep(0.2)
     print("[#] Credential validated...")
-    sleep(1)
+    sleep(0.1)
     print("\n\n[INFO] Welcome to FaBE-CARE")
-    sleep(3)
+    sleep(0.1)
