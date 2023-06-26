@@ -1,0 +1,8 @@
+pandas
+tabulate
+sqlalchemy
+mysql-connector-python
+time
+argparse
+matplotlib
+stdiomask

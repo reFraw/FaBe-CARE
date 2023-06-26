@@ -5,10 +5,7 @@ from sqlalchemy import text
 
 import pandas as pd
 
-from .roles import roles
-from .roles import users
-
-from tabulate import tabulate
+from .roles import users, roles
 
 class Bcolors:
     HEADER = '\033[95m'

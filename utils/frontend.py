@@ -68,12 +68,12 @@ def createEmergenciesScreen():
 
 def fakeBuild():
     print("\n[*] Connecting to server...")
-    sleep(0.1)
+    sleep(3)
     print("[#] Connection established...")
-    sleep(0.1)
+    sleep(0.5)
     print("[*] Validating credentials...")
-    sleep(0.2)
+    sleep(2)
     print("[#] Credential validated...")
-    sleep(0.1)
+    sleep(1)
     print("\n\n[INFO] Welcome to FaBE-CARE")
-    sleep(0.1)
+    sleep(2)

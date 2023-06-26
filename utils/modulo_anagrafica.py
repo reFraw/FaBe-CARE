@@ -4,8 +4,6 @@ from .frontend import createMainScreen
 
 from.functional import getAnagrafica
 
-import pandas as pd
-
 from tabulate import tabulate
 
 import os

@@ -1,4 +1,3 @@
-from utils.frontend import createLogo
 from utils.frontend import Bcolors
 from utils.frontend import fakeBuild
 from utils.frontend import createMainScreen
